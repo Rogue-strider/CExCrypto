@@ -1,17 +1,29 @@
-use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
-
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello, world from Actix-web!")
-}
+use actix_web::{App, HttpResponse, HttpServer, Responder, delete, get, post};
 
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| {
+async fn main() -> Result<(), std::io::Error> {
+    HttpServer::new(move || {
         App::new()
-            .service(hello)
+            .service(create_order)
+            .service(delete_order)
+            .service(get_depth)
     })
     .bind(("127.0.0.1", 8080))?
     .run()
     .await
+}
+
+#[post("/order")]
+async fn create_order() -> impl Responder {
+    HttpResponse::Ok().body("Order created")
+}
+
+#[delete("/order")]
+async fn delete_order() -> impl Responder {
+    HttpResponse::Ok().body("Order deleted")
+}
+
+#[get("/depth")]
+async fn get_depth() -> impl Responder {
+    HttpResponse::Ok().body("Market depth")
 }
