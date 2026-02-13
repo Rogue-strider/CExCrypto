@@ -3,6 +3,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::routes::{create_order, delete_order, get_depth};
 pub mod routes;
+pub mod input;
+pub mod output;
 
 #[actix_web::main]
 async fn main() -> Result<(), std::io::Error> {
@@ -19,24 +21,7 @@ async fn main() -> Result<(), std::io::Error> {
 
 
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct CreateOrderInput {
-    pub price: f64,
-    pub quantity: f64,
-    pub user_id: String,
-    pub side: Side,
-}
 
-#[derive(Debug, Serialize, Deserialize)]
-pub enum Side {
-    Buy,
-    Sell
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-struct CreateOrderResponse{
-    order_id: String
-}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DeleteOrder {
