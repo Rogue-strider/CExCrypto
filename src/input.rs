@@ -21,4 +21,9 @@ pub struct DeleteOrder {
     pub user_id: String,
 }
 
-
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Depth{
+    pub bids: Vec<[u32; 2]>,  //means vector of array which has 2 elemenet
+    pub asks: Vec<[u32; 2]>,
+    pub last_updateid: String
+}

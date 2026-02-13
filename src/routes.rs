@@ -1,6 +1,6 @@
 use actix_web::{App, HttpResponse, HttpServer, Responder, delete, get, post, web::{self, Json}};
 
-use crate::{  input::{CreateOrderInput, DeleteOrder}, output::{CreateOrderResponse, DeleteOrderResponse}};
+use crate::{  input::{CreateOrderInput, DeleteOrder, Depth}, output::{CreateOrderResponse, DeleteOrderResponse}};
 
 
 
@@ -29,5 +29,9 @@ pub async fn delete_order(order: web::Json<DeleteOrder>) -> impl Responder {
 
 #[get("/depth")]
 pub async fn get_depth() -> impl Responder {
-    HttpResponse::Ok().body("Market depth")
+    HttpResponse::Ok().json(Depth{
+        bids: vec![],
+        asks: vec![],
+        last_updateid: String::from("Adsa")
+    })
 }
