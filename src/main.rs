@@ -1,6 +1,8 @@
 use actix_web::{web, App, HttpResponse, HttpServer, Responder, delete, get, post};
 use serde::{Deserialize, Serialize};
 
+use crate::routes::{create_order, delete_order, get_depth};
+pub mod routes;
 
 #[actix_web::main]
 async fn main() -> Result<(), std::io::Error> {
@@ -18,7 +20,7 @@ async fn main() -> Result<(), std::io::Error> {
 
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct CreateOrder {
+pub struct CreateOrderInput {
     pub price: f64,
     pub quantity: f64,
     pub user_id: String,
@@ -32,28 +34,14 @@ pub enum Side {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+struct CreateOrderResponse{
+    order_id: String
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct DeleteOrder {
     pub order_id: String,
     pub user_id: String,
 }
 
-#[post("/order")]
-async fn create_order(order: web::Json<CreateOrder>) -> impl Responder {
-    println!("Received order: {:?}", order);
 
-    HttpResponse::Ok().json("Order created")
-}
-
-#[delete("/order")]
-async fn delete_order(order: web::Json<DeleteOrder>) -> impl Responder {
-    println!("Delete order: {:?}", order);
-
-    HttpResponse::Ok().json("Order deleted")
-}
-
-
-#[get("/depth")]
-async fn get_depth() -> impl Responder {
-    HttpResponse::Ok().body("Market depth")
-}
-//1.11
