@@ -1,6 +1,6 @@
 use actix_web::{App, HttpResponse, HttpServer, Responder, delete, get, post, web::{self, Json}};
 
-use crate::{  input::{CreateOrderInput, DeleteOrder}, output::CreateOrderResponse};
+use crate::{  input::{CreateOrderInput, DeleteOrder}, output::{CreateOrderResponse, DeleteOrderResponse}};
 
 
 
@@ -20,7 +20,10 @@ pub async fn create_order(body: Json<CreateOrderInput>) -> impl Responder {
 pub async fn delete_order(order: web::Json<DeleteOrder>) -> impl Responder {
     println!("Delete order: {:?}", order);
 
-    HttpResponse::Ok().json("Order deleted")
+    HttpResponse::Ok().json(DeleteOrderResponse{
+        filled_qty: 0,
+        average_price: 100
+    })
 }
 
 
