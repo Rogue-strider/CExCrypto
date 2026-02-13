@@ -23,10 +23,5 @@ async fn main() -> Result<(), std::io::Error> {
 
 
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct DeleteOrder {
-    pub order_id: String,
-    pub user_id: String,
-}
 
 
