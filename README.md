@@ -96,29 +96,32 @@ src/
 }
 ```
 
-### ▶️ Running the Project
+## ▶️ Running the Project
 
-**Prerequisites**
-Rust (stable)
-Cargo
+### Prerequisites
+- Rust (stable)
+- Cargo
 
-Run locally
--->cargo run
--->Server will start at: http://127.0.0.1:8080
+### Run Locally
+```bash
+cargo run
+```
+- The server will start at: http://127.0.0.1:8080
 
-###  🛣 Roadmap
- -Matching engine (buy ↔ sell)
- -Partial order fills
- -Order cancellation
- -WebSocket-based depth updates
- -Persistence layer
+### 🛣 Roadmap
+- Matching engine (buy ↔ sell)
+- Partial order fills
+- Order cancellation
+- WebSocket-based depth updates
+- Persistence layer
 
 ### 📚 Learning Goal
 This project is built to understand:
--How exchanges manage orderbooks
--Backend system design in Rust
--Safe shared state in async web servers
--Inspired by real-world trading systems and backend engineering principles.
+- How exchanges manage orderbooks
+- Backend system design in Rust
+- Safe shared state in async web servers
+- Inspired by real-world trading systems and backend engineering principles
+
 
 .
 
