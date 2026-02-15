@@ -1,37 +1,43 @@
-use actix_web::{App, HttpResponse, HttpServer, Responder, delete, get, post, web::{self, Json}};
+use std::sync::{Arc, Mutex};
 
-use crate::{  input::{CreateOrderInput, DeleteOrder, Depth}, output::{CreateOrderResponse, DeleteOrderResponse}};
+use actix_web::{delete, get, post, web::{self, Json, Data}, HttpResponse,Responder};
 
-
+use crate::{inputs::{CreateOrderInput, DeleteOrder}, orderbook::{self, Orderbook}, outputs::{CreateOrderResponse, DeleteOrderResponse, Depth}};
 
 #[post("/order")]
-pub async fn create_order(body: Json<CreateOrderInput>) -> impl Responder {
+pub async fn create_order(body: Json<CreateOrderInput>, orderbook: Data<Arc<Mutex<Orderbook> > >) -> impl Responder {
     let price = body.0.price;
     let quantity = body.0.quantity;
     let user_id = body.0.user_id;
     let side = body.0.side;
+    
+    // maintain orderbook logic
+    let mut orderbook = orderbook.lock().unwrap();
+    orderbook.create_order(price, quantity, user_id, side);
 
-    return HttpResponse::Ok().json(CreateOrderResponse{
+    return HttpResponse::Ok().json(CreateOrderResponse {
         order_id: String::from("ads")
-    })
-} 
+    });
+}
+
 
 #[delete("/order")]
-pub async fn delete_order(order: web::Json<DeleteOrder>) -> impl Responder {
-    println!("Delete order: {:?}", order);
-
-    HttpResponse::Ok().json(DeleteOrderResponse{
+pub async fn delete_order(
+    Json(body): Json<DeleteOrder>,
+    orderbook: Data<Arc<Mutex<Orderbook>>>
+) -> impl Responder {
+    let _ob = orderbook.lock().unwrap();
+    HttpResponse::Ok().json(DeleteOrderResponse {
         filled_qty: 0,
         average_price: 100
     })
 }
 
-
 #[get("/depth")]
-pub async fn get_depth() -> impl Responder {
-    HttpResponse::Ok().json(Depth{
-        bids: vec![],
-        asks: vec![],
-        last_updateid: String::from("Adsa")
-    })
+pub async fn get_depth(
+    orderbook: Data<Arc<Mutex<Orderbook>>>
+) -> impl Responder {
+    let ob = orderbook.lock().unwrap();
+    let depth = ob.get_depth();
+    HttpResponse::Ok().json(depth)
 }
